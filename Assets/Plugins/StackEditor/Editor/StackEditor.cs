@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UObject = UnityEngine.Object;
 
@@ -20,8 +21,25 @@ public abstract class StackEditor : Editor
 {
     private Stack<Editor> activeEditors = new Stack<Editor>();
 
+    public Editor Active
+    {
+        get
+        {
+            return activeEditors.Peek();
+        }
+    }
+
+    public void Back(Editor editor)
+    {
+        while (Active != editor)
+            Pop();
+    }
+
     public override void OnInspectorGUI()
     {
+        foreach (var item in activeEditors.Reverse())
+            item.DrawHeader();
+
         if (activeEditors.Count > 0)
             activeEditors.Peek().OnInspectorGUI();
     }
