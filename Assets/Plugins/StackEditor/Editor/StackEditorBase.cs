@@ -15,18 +15,36 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Base class for every child of a stacked editor.
+/// </summary>
 [Serializable]
 public abstract class StackEditorBase : Editor
 {
+    /// <summary>
+    /// Internal method Editor.OnHeaderIconGUI
+    /// </summary>
     public MethodInfo HeaderIconMethod = typeof(Editor).GetMethod("OnHeaderIconGUI", BindingFlags.NonPublic | BindingFlags.Instance);
+    /// <summary>
+    /// Internal method Editor.OnHeaderTitleGUI
+    /// </summary>
     public MethodInfo HeaderTitleMethod = typeof(Editor).GetMethod("OnHeaderTitleGUI", BindingFlags.NonPublic | BindingFlags.Instance);
+    /// <summary>
+    /// Internal property Editor.targetTitle.
+    /// </summary>
     public PropertyInfo TargetTitleProperty = typeof(Editor).GetProperty("targetTitle", BindingFlags.NonPublic | BindingFlags.Instance);
 
+    /// <summary>
+    /// Current StackEditor.
+    /// </summary>
     public StackEditor StackEditor
     {
         get; set;
     }
 
+    /// <summary>
+    /// Returns Type Name.
+    /// </summary>
     public virtual string Title
     {
         get

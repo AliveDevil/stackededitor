@@ -16,11 +16,17 @@ using System.Linq;
 using UnityEditor;
 using UObject = UnityEngine.Object;
 
+/// <summary>
+/// Base class for any stacked editor container.
+/// </summary>
 [Serializable]
 public abstract class StackEditor : Editor
 {
     private Stack<Editor> activeEditors = new Stack<Editor>();
 
+    /// <summary>
+    /// Returns current inspectors active editor.
+    /// </summary>
     public Editor Active
     {
         get
@@ -29,6 +35,10 @@ public abstract class StackEditor : Editor
         }
     }
 
+    /// <summary>
+    /// Navigate back in hierarchy to given editor.
+    /// </summary>
+    /// <param name="editor">Target Editor in hierarchy</param>
     public void Back(Editor editor)
     {
         while (Active != editor)
@@ -44,11 +54,19 @@ public abstract class StackEditor : Editor
             activeEditors.Peek().OnInspectorGUI();
     }
 
+    /// <summary>
+    /// Removes current item from stack.
+    /// </summary>
     public void Pop()
     {
         DestroyImmediate(activeEditors.Pop());
     }
 
+    /// <summary>
+    /// Add generic editor to current editor.
+    /// </summary>
+    /// <typeparam name="T">Which editor type to create.</typeparam>
+    /// <param name="target">Target object to be inspected.</param>
     public void Push<T>(UObject target) where T : Editor, new()
     {
         var editor = CreateEditor(target, typeof(T));
@@ -62,6 +80,10 @@ public abstract class StackEditor : Editor
         Repaint();
     }
 
+    /// <summary>
+    /// Add default editor for target.
+    /// </summary>
+    /// <param name="target">Target object to be inspected.</param>
     public void Push(UObject target)
     {
         var editor = CreateEditor(target);
